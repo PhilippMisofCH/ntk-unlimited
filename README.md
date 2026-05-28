@@ -5,15 +5,15 @@
 
 ## Overview
 
-`ntkunlimited` is a package to compute finite-width corrections to the [neural tangent kernel](https://proceedings.neurips.cc/paper/2018/hash/5a4be1fa34e62bb8a6ec6b91d2462f5a-Abstract.html) (NTK) and other statistical tensors involving the NTK and preactivations of a neural networks for the multi-input case. It was developed as part of the [*Finite-Width Neural Tangent Kernels from Feynman Diagrams*](https://openreview.net/pdf?id=SOlPHMdSY3) paper, accepted at the *ICML 2026*.
+`ntkunlimited` is a package to compute finite-width corrections to the infinite-width limit of the [neural tangent kernel](https://proceedings.neurips.cc/paper/2018/hash/5a4be1fa34e62bb8a6ec6b91d2462f5a-Abstract.html) (NTK) and other statistical tensors involving the NTK and preactivations of a neural networks for the multi-input case. It was developed as part of the [*Finite-Width Neural Tangent Kernels from Feynman Diagrams*](https://openreview.net/pdf?id=SOlPHMdSY3) paper, published at the *ICML 2026*.
 
 ![](assets/both_kernels_ana-vs-stat_layer_4_comp_0-1.png)
 
-The  NTK is a popular tool to study the training dynamics of neural networks in the limit of infinitely wide hidden layers analytically. Its most prominent implementation, the [`neural-tangents`](https://github.com/google/neural-tangents) package, has been widely adapted in the literature. More recently, finite-width correction have been derived to the NTK to overcome its fundamental drawbacks such as vanishing feature learning in the infinite-width limit.
+The  NTK is a popular tool to study the training dynamics of neural networks. In the limit of infinitely wide hidden layers, it is analytically tractable. The most prominent implementation of these analytical computations, the [`neural-tangents`](https://github.com/google/neural-tangents) package, has been widely adopted in the literature. More recently, finite-width corrections have been derived to the NTK to overcome its fundamental drawbacks such as vanishing feature learning in the infinite-width limit. We follow the conventions of [The Principles of Deep Learning Theory](http://arxiv.org/abs/2106.10165).
 
 The package consists of two parts
 - a `recursions` package that solves the analytic closed system of recursions describing how the statistics evolve with network depth.
-- an `empirical` package implementing sampling routines to estimate the same tensors at variable widths via Monte--Carlo
+- an `empirical` package implementing sampling routines to estimate the same tensors at variable widths via Monte-Carlo
 
 `ntkunlimited` implements all tensor recursions necessary to compute first order corrections to the infinite-width solutions of the NTK and the NNGP for both the single- and multi-input case for MLPs. It automatically resolves the dependency tree and provides a flexible framework based on [SymPy](https://docs.sympy.org/latest/index.html) to allow for straightforward extension to higher order recursions. Empirical sampling is heavily parallelized using [JAX](https://docs.jax.dev/en/latest/) and enables large sample sizes at moderate depths and widths.
 
@@ -153,11 +153,14 @@ If you use any parts of the code in a publication, please cite our paper
 ```bibtex
 @inproceedings{
     guillen2026,
-    title     = {Finite-{{Width Neural Tangent Kernels}} from {{Feynman Diagrams}}},
-    author    =  {Guillen, Max and Misof, Philipp and Gerken, Jan E.},
-    booktitle = {Forty-third {{International Conference}} on {{Machine Learning}}},
-    year      = 2026,
-    month     = jul,
-    url       = {https://openreview.net/forum?id=SOlPHMdSY3}
+    title         = {Finite-{{Width Neural Tangent Kernels}} from {{Feynman Diagrams}}},
+    author        =  {Guillen, Max and Misof, Philipp and Gerken, Jan E.},
+    booktitle     = {Forty-third {{International Conference}} on {{Machine Learning}}},
+    year          = 2026,
+    month         = jul,
+    eprint        = {2502.15376},
+    archiveprefix = {arXiv},
+    primaryclass  = {cs},
+    url           = {https://openreview.net/forum?id=SOlPHMdSY3}
 }
 ```
