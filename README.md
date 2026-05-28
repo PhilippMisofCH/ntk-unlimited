@@ -60,9 +60,9 @@ Results are written as JSON files to `tensors/` inside the current working direc
 
 ### Estimating the empirical tensors via Monte-Carlo
 
-The empirical package is located at `src/ntkunlimited/empirical/`. It initializes the specified MLP with normal distributed weights using the given variances for weights and biases. The requested tensors are computed for each layer up to the last one and approximated by estimating the expectation values through sample means.
+The empirical package is located at `src/ntkunlimited/empirical/`. It initializes the specified MLP with i.i.d. centered normally distributed parameters using the given variances for weights and biases. The requested tensors are computed for each layer up to the last one and approximated by estimating the expectation values through sample means.
 
-To estimate e.g. the NTK kernel (similarly for the NNGP), run e.g.
+To estimate e.g. the NTK kernel (similarly for the NNGP), run
 ```bash
 uv run tensor_convergence_all_layers kernel-stability ntk --trace --n_layers 3 --layer_width 5 --nonlin Gelu --C_w 1.98305826 --C_b 0.17292239 --data_size 4 --n_samples 10 --batch_size 5 --input_file examples/inputs/input_recursions.json --output_dir convergence_study
 ```
@@ -72,7 +72,7 @@ A more detailed explanation of the available options is obtained via
 uv run tensor_convergence_all_layers kernel-stability --help
 ```
 
-To estimate the one of the other tensors, use the `tensor-stability` command. For example, to compute the tensors `V4, D, F, A, B`, run
+To estimate one of the other tensors, use the `tensor-stability` command. For example, to compute the tensors `V4, D, F, A, B`, run
 ```bash
 uv run tensor_convergence_all_layers tensor-stability V4 D F A B --n_layers 3 --layer_width 5 --nonlin Gelu --C_w 1.98305826 --C_b 0.17292239 --data_size 4 --n_samples 10 --batch_size 5 --input_file examples/inputs/input_recursions.json --output_dir convergence_study
 ```
@@ -96,7 +96,7 @@ Results are written as JSON files to `tensors/` inside `--output_dir` (default: 
 
 Computed tensors and numerical integrals are cached to disk and reused on subsequent runs to speed up computation. While there are some basic checks in place that aim to avoid using results computed with different hyperparameters, this feature is still in development. If you changed any of the hyperparameters and suspect the results are wrong, use `--force-recompute` to overwrite the cache and recompute everything from scratch.
 
-There is also another cache for the numerical functions that are created from the symbolic recursions. Those only depend on the `sympy` expressions themselves and don't need to be recomputed for different parameters, hence they are not overwritten by `--force-recompute`. Only if one changes the expressions of the recursions in the source code, the cache files need to be deleted, manually.
+There is also another cache for the numerical functions that are created from the symbolic recursions. Those only depend on the `sympy` expressions themselves and don't need to be recomputed for different parameters, hence they are not overwritten by `--force-recompute`. Only if one changes the expressions of the recursions in the source code, the cache files need to be deleted manually.
 
 The cache directory lives inside the package (`src/ntkunlimited/recursions/cache/`) and contains:
 - lambdified numeric functions (`*_recursion_numeric_fn.pkl`)
